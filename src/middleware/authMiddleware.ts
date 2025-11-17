@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 interface JwtPayload {
     tableId: string;
+    tableNumber: number;
 }
 
 export function authMiddleware(

@@ -20,9 +20,10 @@ model Table {
 }
 
 model Coffee {
-  SKU         String      @id @default(uuid())
+  id          String      @id @default(uuid())
+  SKU         String      @unique
   name        String
-  price       Float
+  price       Decimal
   image       String
   description String
   orders      OrderItem[]

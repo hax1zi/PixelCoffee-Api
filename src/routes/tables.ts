@@ -2,17 +2,17 @@ import { PrismaClient } from "@prisma/client";
 import { Router, type Request, type Response } from "express";
 import jwt from "jsonwebtoken";
 
-const router = Router();
+const tables = Router();
 const prisma = new PrismaClient();
 
-router.get("/table", async (req: Request, res: Response) => {
+tables.get("/sign-in", async (req: Request, res: Response) => {
     try {
         const { tableId } = req.body;
 
         if (!tableId) {
             return res.status(400).json({ error: "tableId é obrigatório" });
         }
-        
+
         const table = await prisma.table.findUnique({
             where: { id: tableId },
         });
@@ -24,9 +24,10 @@ router.get("/table", async (req: Request, res: Response) => {
         const token = jwt.sign(
             {
                 tableId: table.id,
+                tableNumber: table.tableNumber,
             },
             process.env.JWT_SECRET as string,
-            { expiresIn: "1h" }
+            { expiresIn: "3h" }
         );
 
         return res.json({
@@ -39,4 +40,4 @@ router.get("/table", async (req: Request, res: Response) => {
     }
 });
 
-export default router;
+export default tables;
